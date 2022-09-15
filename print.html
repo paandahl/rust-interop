@@ -1,0 +1,1602 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Rust Interop Book</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">The Rust Interop Book</a></li><li class="chapter-item expanded "><a href="c-intro.html"><strong aria-hidden="true">1.</strong> Interop with C</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="c/initial.html"><strong aria-hidden="true">1.1.</strong> Introducing our C application</a></li><li class="chapter-item expanded "><a href="c/calling-from-c.html"><strong aria-hidden="true">1.2.</strong> Calling a Rust function from C</a></li><li class="chapter-item expanded "><a href="c/parameter-and-return.html"><strong aria-hidden="true">1.3.</strong> Taking references and returning primitives from Rust</a></li><li class="chapter-item expanded "><a href="c/cbindgen.html"><strong aria-hidden="true">1.4.</strong> Using cbindgen to generate C headers</a></li><li class="chapter-item expanded "><a href="c/shared-types.html"><strong aria-hidden="true">1.5.</strong> Shared structs and enums</a></li><li class="chapter-item expanded "><a href="c/callbacks.html"><strong aria-hidden="true">1.6.</strong> Sending callbacks from C</a></li><li class="chapter-item expanded "><a href="c/transferring-ownership.html"><strong aria-hidden="true">1.7.</strong> Transferring ownership of data</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Rust Interop Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/paandahl/rust-interop" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-rust-interop-book"><a class="header" href="#the-rust-interop-book">The Rust Interop Book</a></h1>
+<p><em>by Preben Aandahl</em></p>
+<p>This book will show you practical examples of interop between Rust and
+other programming languages.</p>
+<ul>
+<li><a href="c-intro.html">Interop with C</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="interop-with-c"><a class="header" href="#interop-with-c">Interop with C</a></h1>
+<p>This section will take you through a practical example 
+of how to integrate Rust code into an existing C codebase.</p>
+<p>What you learn here is fundamental to all interop with Rust
+since the C ABI (Application Binary Interface) is the only
+way to communicate with Rust functions from foreign languages. 
+All tools and frameworks that offer integration with other 
+programming languages build on the same techniques we use here.</p>
+<h2 id="the-tools-well-use"><a class="header" href="#the-tools-well-use">The tools we'll use</a></h2>
+<p>On the Rust side of the fence, we have the FFI (Foreign 
+Function Interface). We are provided a few keywords and a
+handful of library utilities to expose functions to the 
+outside world (through the C ABI).</p>
+<p>We will start by making a minimal Rust library, exposing a
+function over the FFI, and manually writing the matching
+C declarations to be able to call our function.</p>
+<p>Further on, we will explore how we can use the 
+cbindgen tool to automatically generate function declarations
+and types for our C code.</p>
+<p>Finally, we'll show how we can make function calls in the
+other direction, from C to Rust, using Rust bindgen to
+keep the Rust declarations in sync.</p>
+<h2 id="other-helpful-resources"><a class="header" href="#other-helpful-resources">Other helpful resources</a></h2>
+<ul>
+<li>The <a href="https://doc.rust-lang.org/nomicon/ffi.html">FFI chapter</a>
+of the Rustonomicon offers some technical details on FFI
+and a few practical examples (focusing mainly on calling C from Rust).</li>
+<li><a href="http://jakegoulding.com/rust-ffi-omnibus/">The Rust FFI Omnibus</a>
+has a handful of snippets demonstrating how to pass data 
+across the language boundary.</li>
+<li>cbindgen has a 
+<a href="https://github.com/eqrion/cbindgen/blob/master/docs.md">User Guide</a>,
+but it doesn't really show how to use the tool, focusing
+mainly on configuration options.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introducing-our-c-application"><a class="header" href="#introducing-our-c-application">Introducing our C application</a></h1>
+<p>Our project will start out with a simple C application
+called <code>count</code>, which we'll gradually extend with Rust
+code.</p>
+<p>The application relies on an internal C module (<code>file.h</code> / <code>file.c</code>) to read
+a file from disk and convert it to a string.</p>
+<p>Based on a user-supplied command, the application then runs
+a calculation on the file text. Initially,
+<code>bytes</code> is the only supported command, but we will soon add
+other options.</p>
+<h2 id="building-and-running-the-code"><a class="header" href="#building-and-running-the-code">Building and running the code</a></h2>
+<p>The source code for each chapter is available in our GitHub
+repository, and you'll find the initial code here.</p>
+<p>Start by checking out the code and preparing a build directory:</p>
+<pre><code class="language-shell">$ git checkout git://rust-interop
+$ cd rust-interop/c/chap1
+$ mkdir build &amp;&amp; cd build
+</code></pre>
+<p>Configure &amp; run the build, create some test data, and run
+the program:</p>
+<pre><code class="language-shell">$ cmake .. &amp;&amp; make
+$ echo -n &quot;Rust interop&quot; &gt; test.txt
+$ ./count bytes test.txt
+12
+</code></pre>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<p>As we go along, we will try to add new functionality to this
+application, implementing most of the new logic in Rust.</p>
+<p>The initial code is included in full below
+if you want to familiarize yourself with it:</p>
+<p><code>src/main.cpp</code> - the entry point</p>
+<pre><code class="language-c">#include &quot;modules/file/file.h&quot;
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void run_command_for_file(const char* command, const char* filename);
+uint64_t do_calculation(const char* command, const char* data);
+uint64_t count_bytes(const char* data);
+void print_result(const uint64_t result);
+
+int main(const int argc, const char *argv[]) {
+    const char* command = argv[1];
+    const char* filename = argv[2] ;
+    run_command_for_file(command, filename);
+    return 0;
+}
+
+void run_command_for_file(const char* command, const char* filename) {
+    File file = file_read(filename);
+    char* str = file_to_string(file);
+
+    const uint64_t result = do_calculation(command, str);
+    print_result(result);
+
+    file_free_string(str);
+    file_free(file);
+}
+
+uint64_t do_calculation(const char* command, const char* data) {
+    if (strcmp(command, &quot;bytes&quot;) == 0) {
+        return count_bytes(data);
+    } else {
+        fprintf(stderr, &quot;Unrecognized command: %s\n&quot;, command);
+        exit(1);
+    }
+}
+
+uint64_t count_bytes(const char* data) {
+    return strlen(data);
+}
+
+void print_result(const uint64_t result) {
+    printf(&quot;%llu\n&quot;, result);
+}
+</code></pre>
+<p><code>src/modules/file.h </code> - The file module interface</p>
+<pre><code class="language-c">#pragma once
+
+#include &lt;stdlib.h&gt;
+
+typedef struct File {
+    const char* filename;
+    uint8_t* data;
+    size_t length;
+} File;
+
+File file_read(const char* filename);
+char* file_to_string(File file);
+void file_free(File file);
+void file_free_string(char* file_string);
+</code></pre>
+<p><code>src/modules/file.c </code> - The file module implementation</p>
+<pre><code class="language-c">#include &quot;file.h&quot;
+
+#include &lt;stdint.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+File file_read(const char* filename) {
+    FILE* file_handle = fopen (filename, &quot;rb&quot;);
+    if (!file_handle) {
+        printf(&quot;Could not open file: '%s'\n&quot;, filename);
+        exit(1);
+    }
+    fseek(file_handle, 0, SEEK_END);
+    long length = ftell(file_handle);
+    fseek(file_handle, 0, SEEK_SET);
+    uint8_t* data = (uint8_t*)malloc(length);
+    fread(data, 1, length, file_handle);
+    fclose(file_handle);
+    return (File) {
+            filename,
+            data,
+            length
+    };
+}
+
+char* file_to_string(const File file) {
+    char* str = (char*)malloc(file.length + 1);
+    memcpy(str, file.data, file.length);
+    str[file.length] = '\0';
+    return str;
+}
+
+void file_free(const File file) {
+    free(file.data);
+}
+
+void file_free_string(char* file_string) {
+    free(file_string);
+}
+</code></pre>
+<p><code>CMakeLists.txt</code> - build configuration</p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.22)
+project(rust-interop-c-chap1)
+set(CMAKE_C_STANDARD 17)
+
+add_executable(count src/main.c src/modules/file/file.c)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="calling-a-rust-function-from-c"><a class="header" href="#calling-a-rust-function-from-c">Calling a Rust function from C</a></h1>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> </p>
+<p>If you're going to type the code as you follow along,
+you should start by making a copy of the initial C application in 
+the first chapter.</p>
+<pre><code class="language-shell">$ cp -R rust-interop/c/chap1 count
+$ cd count
+</code></pre>
+<p>The final result of this chapter is also available 
+<a href="https://github.com/paandahl/rust-interop/tree/main/c/chap2">here</a>.</p>
+</blockquote>
+<p>Let's dive straight in and use cargo to initialize a Rust library
+directly in our project folder:</p>
+<pre><code class="language-shell">$ cp -R rust-interop/c/chap1 count
+$ cd count
+$ cargo init --lib --name count
+</code></pre>
+<blockquote>
+<p>Here, we put our C and Rust code in the same folder. The upside 
+to this approach is that we can gradually introduce Rust to our modules, 
+and we're going to demonstrate a mixed-language unit of code with dependencies 
+in both directions.</p>
+<p>Another common practice is keeping the Rust library in a separate folder;
+if it is self-contained, that is an excellent way to handle it.</p>
+</blockquote>
+<p>We also have to tell cargo that we intend to produce a static system library
+(to be linked into our C binary):</p>
+<p>Filename: Cargo.toml</p>
+<pre><code class="language-toml"># --snip--
+
+[lib]
+crate-type = [&quot;staticlib&quot;]
+
+[dependencies]
+</code></pre>
+<h2 id="making-the-function"><a class="header" href="#making-the-function">Making the function</a></h2>
+<p>Let's add a <code>version</code> command that works like this:</p>
+<pre><code class="language-shell">$ ./count version
+1.0.0
+</code></pre>
+<p>We start by replacing the contents of lib.rs with our new function:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub extern &quot;C&quot; fn print_version() {
+    println!(&quot;count version 1.0.0&quot;);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>There are a couple of noteworthy things to point out here:</p>
+<h3 id="name-mangling"><a class="header" href="#name-mangling">Name mangling</a></h3>
+<p>Usually, the Rust compiler rewrites the function names behind the scenes to include 
+details such as the crate name and the containing module.</p>
+<p>Our function name will turn into something like this:</p>
+<pre><code>__ZN5count11get_version17h0b87bf00f9702f77E
+</code></pre>
+<p>C has no concept of crates and modules, so we need to add <code>#[no_mangle]</code> to be able
+to resolve the function simply as <code>print_version()</code>.</p>
+<p>With mangling disabled, all exported function names need to be unique.</p>
+<h3 id="abi-application-binary-interface"><a class="header" href="#abi-application-binary-interface">ABI (Application Binary Interface)</a></h3>
+<p>We also add <code>extern &quot;C&quot;</code> to the function to allow it to be called with your platforms
+C ABI. This specifies how data is laid out in memory and how functions are called.</p>
+<p>The C ABI is the lingua franca of application binaries and our only line of 
+communication to the non-Rust world. All interop between Rust 
+and other languages is based on calling conventions from C.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> We have also added the <code>pub</code> keyword to our function. Although strictly
+not necessary (C has no concept of private functions), it's good to be explicit 
+that our function is part of the library's public interface.</p>
+</blockquote>
+<h3 id="building-the-rust-library"><a class="header" href="#building-the-rust-library">Building the Rust library</a></h3>
+<p>We can test that our Rust library builds with cargo:</p>
+<pre><code class="language-shell">$ cargo build
+Compiling count v0.1.0 (/path/to/count)
+ Finished dev [unoptimized + debuginfo] target(s) in 0.56s
+</code></pre>
+<p>The static library should now be ready at <code>target/debug/libcount.a</code> (Unix-like) or
+<code>target/debug/count.lib</code> (Windows). </p>
+<h2 id="calling-our-function-from-c"><a class="header" href="#calling-our-function-from-c">Calling our function from C</a></h2>
+<p>By manually writing a function declaration, we tell our C application that the function <code>get_version()</code> exists. Then we call that function if <code>command</code> is equal
+to <code>&quot;version&quot;</code>. We make sure to do this before the file name is parsed since
+no file is involved.</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+void print_version();
+
+int main(const int argc, const char *argv[]) {
+    const char* command = argv[1];
+
+    if (strcmp(command, &quot;version&quot;) == 0) {
+        print_version();
+        return 0;
+    }
+
+    // --snip--
+</code></pre>
+<p>We amust also amend our CMake configuration to link to the Rust library. Add the
+following lines to the bottom of the file:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake"># --snip--
+
+set(RUST_LIB_NAME ${CMAKE_STATIC_LIBRARY_PREFIX}count${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(RUST_LIB_PATH ${CMAKE_SOURCE_DIR}/target/debug/${RUST_LIB_NAME})
+target_link_libraries(count ${RUST_LIB_PATH})
+</code></pre>
+<p>We construct the library name in a platform-independent way (libcount.a or
+count.lib), and link it to our executable.</p>
+<p>Let's build and run the program:</p>
+<pre><code class="language-shell">$ mkdir -p build
+$ cd build
+$ cmake ..
+$ cmake --build .
+$ ./count version
+count version 1.0.0
+</code></pre>
+<p>We've extended our C application with Rust code!</p>
+<h2 id="harmonizing-cmake--cargo"><a class="header" href="#harmonizing-cmake--cargo">Harmonizing CMake &amp; Cargo</a></h2>
+<p>The current setup works, but if we make changes on the Rust
+side, we have to manually trigger the cargo build before
+the CMake build.</p>
+<p>Let's rewrite our CMake configuration so that it automatically
+rebuilds the Rust code upon changes:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.22)
+project(rust-interop-c)
+set(CMAKE_C_STANDARD 17)
+
+set(RUST_LIB_NAME ${CMAKE_STATIC_LIBRARY_PREFIX}count${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(RUST_LIB_PATH ${CMAKE_SOURCE_DIR}/target/debug/${RUST_LIB_NAME})
+
+add_custom_command(
+        OUTPUT ${RUST_LIB_PATH}
+        COMMAND cargo build --manifest-path ${CMAKE_SOURCE_DIR}/Cargo.toml
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/lib.rs
+        USES_TERMINAL
+)
+
+add_executable(count src/main.c src/modules/file/file.c ${RUST_LIB_PATH})
+target_link_libraries(count ${RUST_LIB_PATH})
+</code></pre>
+<p>We use <code>add_custom_command()</code> to define our library as an 
+<code>OUTPUT</code> of the cargo build, that <code>DEPENDS</code> on changes
+to the content of <code>lib.rs</code>. </p>
+<p>Adding the library to the 
+source list in <code>add_executable()</code> will evaluate our custom
+command before linking happens.</p>
+<p>From the <code>build</code>-folder, we can now re-configure CMake:</p>
+<pre><code class="language-shell">$ cmake ..
+</code></pre>
+<p>And subsequent builds should recompile the Rust library 
+if there are new changes:</p>
+<pre><code class="language-shell">$ cmake --build .
+</code></pre>
+<h3 id="whats-next"><a class="header" href="#whats-next">What's next?</a></h3>
+<p>The facilities we use to bind Rust to other languages are often
+referred to as the Rust FFI (Foreign Function Interface). Now
+that we have  a working configuration, we will see how we can
+send and receive data across the FFI boundary.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="taking-references-and-returning-primitives-from-rust"><a class="header" href="#taking-references-and-returning-primitives-from-rust">Taking references and returning primitives from Rust</a></h1>
+<p>Let's add a third command to our application:</p>
+<pre>
+./count version
+./count bytes file.txt
+<i><b>./count characters file.txt</b></i>
+</pre>
+<p>The number of bytes and
+characters in a file will often be the same. But a byte can
+only represent 256 different values, and to support all the
+alphabets out there, and special characters like emojis,
+UTF-8 encoded text allows for multiple bytes representing
+single characters.</p>
+<p>Example: while the string <code>Kaimū</code> has five characters, it is six bytes
+long because the <code>ū</code> is a two-byte character.</p>
+<p>C has no built-in support for multibyte characters, so let's
+implement the counting function in Rust, where Unicode characters
+are first-class citizens.</p>
+<h2 id="dispatching-our-new-command"><a class="header" href="#dispatching-our-new-command">Dispatching our new command</a></h2>
+<p>This  time we start from the other side by adding a function
+declaration for our new function: <code>count_characters()</code>. We
+also add an <code>else if</code> clause to dispatch the new command
+in <code>do_calculation()</code>:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip --
+
+void print_version();
+uint64_t count_characters(const char* text);
+
+// --snip --
+
+uint64_t do_calculation(const char* command, const char* data) {
+    if (strcmp(command, &quot;bytes&quot;) == 0) {
+        return count_bytes(data);
+    } else if (strcmp(command, &quot;characters&quot;) == 0) {
+        return count_characters(data);
+    } else {
+        fprintf(stderr, &quot;Unrecognized command: %s\n&quot;, command);
+        exit(1);
+    }
+}
+</code></pre>
+<h2 id="adding-a-function-with-parameters-and-a-return-type"><a class="header" href="#adding-a-function-with-parameters-and-a-return-type">Adding a function with parameters and a return type</a></h2>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::ffi::CStr;
+use std::os::raw::c_char;
+
+// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn count_characters(text: *const c_char) -&gt; u64 {
+    let text = unsafe { CStr::from_ptr(text) };
+    let text = text.to_str().expect(&quot;Unicode conversion failed.&quot;);
+    text.chars().count().try_into().unwrap()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Our new function takes a pointer to C characters, represented
+by the <code>c_char</code> type from <code>std::os::raw</code>. We then turn it into
+a CStr with <code>CStr::from_ptr()</code>. <code>CStr</code> is a handy
+utility class that deals with
+C string references (i.e. it doesn't try to take ownership
+of or free the data).</p>
+<p>By converting the <code>CStr</code> to a <code>&amp;str</code>, we gain access to Rust's
+regular string utilities and can proceed with
+<code>text.chars().count()</code> to get the number of Unicode characters.</p>
+<p>The function returns a plain <code>u64</code>, since that type matches the
+definition of <code>uint64_t</code> on the C side.</p>
+<p>Let's try it:</p>
+<pre><code class="language-shell">$ cd build
+$ cmake --build .
+$ echo &quot;Kaimū&quot; &gt; kaimu.txt
+$ ./count bytes kaimu.txt
+6
+$ ./count characters kaimu.txt
+5
+</code></pre>
+<h2 id="which-types-match-up"><a class="header" href="#which-types-match-up">Which types match up?</a></h2>
+<p>Here's a quick reference of the most common Rust primitives
+you can pass directly across the FFI boundary.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">Rust</th><th style="text-align: center">C</th></tr></thead><tbody>
+<tr><td style="text-align: center">bool</td><td style="text-align: center">bool</td></tr>
+<tr><td style="text-align: center">u8 / i8</td><td style="text-align: center">uint8_t / int8_t</td></tr>
+<tr><td style="text-align: center">u16 / i16</td><td style="text-align: center">uint16_t / int16_t</td></tr>
+<tr><td style="text-align: center">u32 / i32</td><td style="text-align: center">uint32_t / int32_t</td></tr>
+<tr><td style="text-align: center">u64 / i64</td><td style="text-align: center">uint64_t / int64_t</td></tr>
+<tr><td style="text-align: center">f32</td><td style="text-align: center">float</td></tr>
+<tr><td style="text-align: center">f64</td><td style="text-align: center">double</td></tr>
+<tr><td style="text-align: center">usize</td><td style="text-align: center">uintptr_t</td></tr>
+</tbody></table>
+</div>
+<p>There are also some compatibility types in
+<a href="https://doc.rust-lang.org/std/os/raw/index.html">std::os::raw</a>
+for the platform-specific C types. Here's an excerpt:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">Rust</th><th style="text-align: center">C</th></tr></thead><tbody>
+<tr><td style="text-align: center">c_char</td><td style="text-align: center">char</td></tr>
+<tr><td style="text-align: center">c_int</td><td style="text-align: center">signed int</td></tr>
+<tr><td style="text-align: center">c_uint</td><td style="text-align: center">unsigned int</td></tr>
+<tr><td style="text-align: center">c_long</td><td style="text-align: center">signed long</td></tr>
+<tr><td style="text-align: center">c_ulong</td><td style="text-align: center">unsigned long</td></tr>
+<tr><td style="text-align: center">c_void</td><td style="text-align: center">void</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>NOTE:</strong> The C standard does not strictly define the length of float and
+double, but in practice, this mapping will work
+on all major platforms. For the paranoid, there's also a
+<code>c_float</code> and a <code>c_double</code> in <code>std::os::raw</code>.</p>
+<p>You can read more detailed documentation about the memory layout of scalar types
+<a href="https://rust-lang.github.io/unsafe-code-guidelines/layout/scalars.html">here</a>.</p>
+</blockquote>
+<p>In the next chapter, we will discover how the function
+declarations that our C code needs from Rust can be generated
+automatically instead of the error-prone and tedious task
+of writing and maintaining them by hand.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-cbindgen-to-generate-c-headers"><a class="header" href="#using-cbindgen-to-generate-c-headers">Using cbindgen to generate C headers</a></h1>
+<p>In the previous chapters we manually wrote the C declarations
+corresponding to our Rust FFI functions. There's at least two
+good reasons to automate this process:</p>
+<ul>
+<li>Writing duplicate C declarations is tedious</li>
+<li>An automated system leaves much less room for error</li>
+</ul>
+<p>cbindgen to the rescue! Add it as a build-dependcy:</p>
+<p>Filename: Cargo.toml</p>
+<pre><code class="language-toml"># --snip--
+
+[build-dependencies]
+cbindgen = &quot;0.24&quot;
+</code></pre>
+<p>We can customize our Cargo build by adding a build.rs to our project root:</p>
+<p>Filename: build.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021">use cbindgen::Language;
+use std::env;
+
+fn main() {
+    println!(&quot;cargo:rerun-if-changed=src/lib.rs&quot;);
+
+    let manifest_dir = env::var(&quot;CARGO_MANIFEST_DIR&quot;).unwrap();
+
+    cbindgen::Builder::new()
+        .with_crate(manifest_dir)
+        .with_language(Language::C)
+        .generate()
+        .expect(&quot;Unable to generate C bindings&quot;)
+        .write_to_file(&quot;target/bridge/bindings.h&quot;);
+}
+</code></pre></pre>
+<p>On every change to lib.rs we generate bindings.h. This will crawl through our Rust
+code and generate C declarations for all FFI-exported types and functions.</p>
+<p>You can have a look at the output by running <code>cargo build</code> and checking out
+<code>target/bridge/bindings.h</code>.</p>
+<p>Let's update our CMake build correspondingly:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake"># --snip--
+
+set(
+        RUST_LIB_SOURCES
+        ${CMAKE_SOURCE_DIR}/build.rs
+        ${CMAKE_SOURCE_DIR}/src/lib.rs
+)
+
+add_custom_command(
+        # --snip--
+
+        DEPENDS ${RUST_LIB_SOURCES}
+
+        # --snip--
+)
+
+# --snip--
+
+target_include_directories(count PRIVATE ${CMAKE_SOURCE_DIR}/target/bridge)
+</code></pre>
+<p>We've added a list of all the Rust sources instead of listing
+files directly in the DEPENDS clause. This will scale better as
+our application continues to grow.</p>
+<p>We also included the directory of our generated C headers, so that
+the compiler will know where to look for them.</p>
+<p>The last step is to include the header in our C code, and to remove
+our manually written declarations.</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">#include &quot;modules/file/file.h&quot;
+#include &quot;bindings.h&quot;
+
+// --snip--
+
+// Remove: void print_version();
+// Remove: uint64_t count_characters(const char* text);
+
+// --snip--
+</code></pre>
+<p>That's all. If you reconfigure &amp; rebuild the CMake project, the
+application should still work exactly like it used to.</p>
+<p>This might seem like a lot of work to get rid of two lines of
+code, but as our application grows, this investment will pay off.</p>
+<p>Let's see how we can leverage this new setup to pass custom
+structs across the language boundary.</p>
+<blockquote>
+<p><strong>NOTE:</strong> In a later chapter we will see how we can use bindgen (as opposed
+to cbindgen) to generate declarations in the opposite direction -
+allowing us to call C code from Rust.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="shared-structs-and-enums"><a class="header" href="#shared-structs-and-enums">Shared structs and enums</a></h1>
+<p>The current program works if you pass the correct command
+line arguments, but if a user tries to
+call it without any arguments it will fail with a segfault:</p>
+<pre><code class="language-console">$ ./count
+zsh: segmentation fault  ./count
+</code></pre>
+<p>To improve upon this, we'll add error handling by validating the command line arguments passed in by the user.</p>
+<p>Let's start by adding a struct to represent the command line
+arguments, and an enum to hold the chosen command.</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+pub struct Arguments {
+    command: Command,
+    filename: *const c_char,
+}
+
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We use <code>*const c_char</code> instead of the built-in <code>String</code> type because
+we intend to read the filename property from our C code.</p>
+<p>Let's define the interface of the function that will parse the arguments:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    let arguments = unsafe { slice::from_raw_parts(argv, argc) };
+
+    // --snip--
+
+    Arguments { command, filename }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We define <code>argc</code> and <code>argv</code> to mimic the parameters our entry point takes in <code>main.c</code>.
+There's a subtle difference in that <code>usize</code> translates to <code>uintptr_t</code>, not <code>size_t</code> as one
+might have thought. Although not guaranteed by the C standard, <code>size_t</code> is smaller or
+equal to <code>unitptr_t</code> in all known implementations, so we should be fine.</p>
+<p>The two parameters are then upgraded to a slice (<code>&amp;[*const c_char]</code>) for easier access. This is
+unsafe because we have to promise the compiler that <code>argv</code> contains exactly <code>argc</code> elements. Once the slice
+is created, its elements can be accessed safely.</p>
+<p>Let's see how we can convert the second element to a <code>Command</code>:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let command = arguments.get(1).copied().expect(&quot;Missing command.&quot;);
+    let command = unsafe { CStr::from_ptr(command) }.to_str().unwrap();
+    let command = match command {
+        &quot;version&quot; =&gt; Command::Version,
+        &quot;bytes&quot; =&gt; Command::Bytes,
+        &quot;characters&quot; =&gt; Command::Characters,
+        _ =&gt; panic!(&quot;Command not recognized: {command}&quot;)
+    };
+
+    // --snip--
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We use three separate steps to gradually turn <code>command</code> into the type we want it to be:</p>
+<ol>
+<li>We <code>.get()</code> the second element of the <code>arguments</code> slice, make a copy of the referenced
+pointer, and trigger a <code>panic!</code> if it's missing. If everything worked as expected,
+we now have a <code>*const c_char</code>.</li>
+<li>The pointer is then fed in to <code>Cstr::from_ptr</code>, which is unsafe because we have to promise
+that our string is zero-terminated (ends with a <code>\0</code> character). We then convert it
+to an <code>&amp;str</code>.</li>
+<li>Lastly, we use a match expression to map it to the correct <code>Command</code>.</li>
+</ol>
+<p>The filename also needs to be handled:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let filename = arguments.get(2).copied();
+    if filename.is_none() &amp;&amp; command != Command::Version {
+        panic!(&quot;Missing filename.&quot;);
+    }
+    let filename = filename.unwrap_or(ptr::null());
+
+    // --snip--
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We only require the filename to be present if the command is something else than &quot;version&quot;.
+In the other case, we create a null pointer by calling <code>ptr::null()</code>.</p>
+<h2 id="inspecting-the-generated-bindings"><a class="header" href="#inspecting-the-generated-bindings">Inspecting the generated bindings</a></h2>
+<p>Let's have a look at the generated C bindings by running a <code>cargo build</code>:</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef struct Arguments Arguments;
+
+void print_version(void);
+
+uint64_t count_characters(const char *text);
+
+struct Arguments parse_args(uintptr_t argc, const char *const *argv);
+</code></pre>
+<p>We have a problem! The <code>Arguments</code> is defined as an opaque struct. So while we
+can get a handle on it, we won't be able to access any of its fields in C.</p>
+<p>The reason that cbindgen went for the opaque type is that Rust's default data layout is
+incompatible with C. Luckily, Rust has an attribute called <code>repr</code>, that will fix that
+problem for us:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip --
+
+#[repr(C)]
+pub struct Arguments {
+    command: Command,
+    filename: *const c_char,
+}
+
+#[repr(C)]
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+
+// --snip --
+<span class="boring">}
+</span></code></pre></pre>
+<p>With this fix in hand, we can do another <code>cargo build</code> and look at cbindgen's output.</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef enum Command {
+  Version,
+  Bytes,
+  Characters,
+} Command;
+
+typedef struct Arguments {
+  enum Command command;
+  const char *filename;
+} Arguments;
+
+// --snip--
+</code></pre>
+<p>This looks much better! But let's ask cbindgen to prefix our enum values to reduce the
+risk of a name colission:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip --
+
+/// cbindgen:prefix-with-name
+#[repr(C)]
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+
+// --snip --
+<span class="boring">}
+</span></code></pre></pre>
+<p>A rebuild should change the Command enum to this:</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef enum Command {
+  Command_Version,
+  Command_Bytes,
+  Command_Characters,
+} Command;
+
+// --snip--
+</code></pre>
+<p>That looks much better! Let's take it for a spin.</p>
+<h2 id="using-our-argument-parser"><a class="header" href="#using-our-argument-parser">Using our argument parser</a></h2>
+<p>Using our new argument parsing function is fairly straightforward:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    const Arguments args = parse_args(argc, argv);
+
+    if (args.command == Command_Version) {
+        print_version();
+        return 0;
+    }
+
+    run_command_for_file(args.command, args.filename);
+    return 0;
+}
+
+// --snip--
+</code></pre>
+<p>This won't work quite yet -
+we also have to update the command type in <code>run_command_for_file</code> and <code>do_calculation</code>:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+void run_command_for_file(Command command, const char* filename);
+uint64_t do_calculation(Command command, const char* data);
+
+// --snip--
+
+void run_command_for_file(const Command command, const char* filename) {
+    // --snip--
+}
+
+uint64_t do_calculation(const Command command, const char* data) {
+    switch (command) {
+        case Command_Bytes:
+            return count_bytes(data);
+        case Command_Characters:
+            return count_characters(data);
+        default:
+            fprintf(stderr, &quot;Unrecognized command: %i\n&quot;, command);
+            exit(1);
+    }
+}
+
+// --snip--
+</code></pre>
+<p>Now that <code>command</code> is an enum, we can get rid of all the calls to <code>strcmp</code>,
+and we can also opt to use a <code>switch</code> statement.</p>
+<p>Build and run the application to see the input validation in action:</p>
+<pre><code class="language-console">$ cmake --build .
+$ ./count
+thread '&lt;unnamed&gt;' panicked at 'Missing command.', src/lib.rs:36:45
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+fatal runtime error: failed to initiate panic, error 5
+zsh: abort      ./count
+</code></pre>
+<p>Panicking is a very crude form of error handling, but at least we give the user
+a hint that there's a <code>'Missing command.'</code>.</p>
+<p>Sharing structs across the FFI boundary is a useful technique when your function
+is dealing with more than simple values. In the next section we will show how you
+can send function callbacks from C to Rust.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sending-callbacks-from-c"><a class="header" href="#sending-callbacks-from-c">Sending callbacks from C</a></h1>
+<p>Our application is counting bytes and characters like there's no tomorrow. But imagine
+you're writing a book, have one file per chapter, and want to count characters
+across them regularly.</p>
+<p>Given a CSV file (Comma Separated Values), we want our application to run the
+calculation on each file in the list.</p>
+<p>An example:</p>
+<p>Filename: list.csv</p>
+<pre><code>chapter1.md,chapter2.md
+</code></pre>
+<p>Filename: chapter1.md</p>
+<pre><code># Getting started
+</code></pre>
+<p>Filename: chapter2.md</p>
+<pre><code># Wrapping up
+</code></pre>
+<p>Our programs command line interface gets a new flag:</p>
+<pre>
+./count version
+./count bytes list.csv <i><b>[--csv-list]</i></b>
+./count characters list.csv <i><b>[--csv-list]</i></b>
+</pre>
+<p>For the given files we want to be able to run commands like this:</p>
+<pre><code class="language-console">$ ./count bytes list.csv --csv-list
+18 chapter1.md
+14 chapter2.md
+</code></pre>
+<h2 id="adding-a-csv-module"><a class="header" href="#adding-a-csv-module">Adding a CSV module</a></h2>
+<p>This time around we'll start by making the logic in Rust, and then we'll make a FFI wrapper
+separately, with C types and attributes. The core of our module is a function that
+takes some string data,
+splits it on commas, and calls a callback one time for each of the separated values:</p>
+<p>Filename: src/modules/csv.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn for_each_value(csv: &amp;str, callback: impl Fn(&amp;str)) {
+    for value in csv.split(&quot;,&quot;) {
+        callback(value.trim());
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We proceed to add the C interface in a separate module at the beginning of the file:</p>
+<p>Filename: src/modules/csv.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod ffi {
+    use std::ffi::{c_void, CStr, CString};
+    use std::os::raw::c_char;
+
+    #[no_mangle]
+    pub extern &quot;C&quot; fn csv_for_each_value(
+        csv: *const c_char,
+        c_callback: unsafe extern &quot;C&quot; fn(*const c_char, *const c_void),
+        context: *const c_void,
+    ) {
+        let csv = unsafe { CStr::from_ptr(csv) }.to_str().unwrap();
+        super::for_each_value(csv, |value| {
+            let value = CString::new(value).unwrap();
+            unsafe { c_callback(value.as_ptr(), context) };
+        });
+    }
+}
+
+// --snip--
+<span class="boring">}
+</span></code></pre></pre>
+<p>We have separated out the FFI-related type conversions from our logic. Notice that
+our exported wrapper function has the same name, but with the module name prefixed:
+<code>csv_for_each_value()</code>.</p>
+<p>The wrapper takes three parameters:</p>
+<p>1. <code>csv: *const c_char</code></p>
+<p>The contents of a CSV file, as a char pointer. Just like earlier, we process it from <code>*const c_char</code> to <code>CStr</code> to <code>&amp;str</code>.</p>
+<p>2. <code>c_callback: unsafe extern &quot;C&quot; fn(*const c_char, *const c_void)</code></p>
+<p>An external function callback that takes two arguments. The first is a char pointer taking values from our CSV, and the second is a <code>c_void</code> pointer. Since C doesn't have closures, a void pointer is a common way
+to allow the callee to pass along arbitrary data / state to the callback function.</p>
+<p>3. <code>context: *const c_void</code></p>
+<p>The last paramter is a void pointer to the data we want to pass along to the callback.</p>
+<hr />
+<p>Upon receiving the string data in our wrapper, we pass it along to <code>CString::new(value).unwrap()</code>.</p>
+<p><code>CString</code> is to <code>CStr</code> what <code>String</code> is to <code>&amp;str</code> - an owned version of a
+C string. But why are we creating an owned string when we want to pass
+along a reference?</p>
+<p>Ideally, we would have liked to do the inverse of what we do on
+the receiving end, going from <code>&amp;str</code> to <code>CStr</code> to <code>*const c_char</code>. But
+to convert to a C string Rust needs to zero-terminate it by adding a <code>\0</code>
+at the end of the buffer, thereby requiring ownership of the data.</p>
+<p>We then call <code>value.as_ptr()</code> to get a <code>*const c_char</code> reference to our
+temporary zero-terminated string.</p>
+<h2 id="parsing-the-new-command-line-argument"><a class="header" href="#parsing-the-new-command-line-argument">Parsing the new command line argument</a></h2>
+<p>In our library's entry point, we need to pull in our new module at the
+beginning of the file, and extend the argument parsing to look for and
+validate our new <code>--csv-list</code> flag:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod modules {
+    mod csv;
+}
+
+// --snip--
+
+#[repr(C)]
+pub struct Arguments {
+    command: Command,
+    filename: *const c_char,
+    file_mode: FileMode,
+}
+
+/// cbindgen:prefix-with-name
+#[repr(C)]
+pub enum FileMode {
+    Normal,
+    CsvList,
+}
+
+// --snip--
+
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let file_mode = if let Some(csv_flag) = arguments.get(3).copied() {
+        let csv_flag = unsafe { CStr::from_ptr(csv_flag) }.to_str().unwrap();
+        match csv_flag {
+            &quot;--csv-list&quot; =&gt; FileMode::CsvList,
+            _ =&gt; panic!(&quot;CSV flag not recognized: {csv_flag}&quot;)
+        }
+    } else {
+        FileMode::Normal
+    };
+
+    Arguments { command, filename, file_mode }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We should rebuild the C bindings every time this new file changes:</p>
+<p>Filename: build.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021">// --snip--
+
+fn main() {
+    println!(&quot;cargo:rerun-if-changed=src/lib.rs&quot;);
+    println!(&quot;cargo:rerun-if-changed=src/modules/csv.rs&quot;);
+
+    // --snip--
+}
+
+// --snip--
+</code></pre></pre>
+<p>And let's not forget to add it as a dependency of our CMake config:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake"># --snip--
+
+set(
+        RUST_LIB_SOURCES
+        ${CMAKE_SOURCE_DIR}/build.rs
+        ${CMAKE_SOURCE_DIR}/src/lib.rs
+        ${CMAKE_SOURCE_DIR}/src/modules/csv.rs
+)
+
+# --snip--
+</code></pre>
+<h2 id="re-wiring-mainc"><a class="header" href="#re-wiring-mainc">Re-wiring main.c</a></h2>
+<p>We also have to adapt our entry point to the new realities. First, we
+change <code>run_command_for_file</code> so that we'll be able to use it as a
+callback. We flip around the two parameters it takes, and substitute
+<code>Command</code> for a <code>CommandContext</code>, which is the state we soon will pass around
+as a void pointer:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+typedef struct CommandContext {
+    Command command;
+} CommandContext;
+
+void run_command_for_file(const char* filename, const void* ctx_ptr);
+
+// --snip--
+
+void run_command_for_file(const char* filename, const void* ctx_ptr) {
+    const CommandContext* ctx = (CommandContext*) ctx_ptr;
+    File file = file_read(filename);
+    char* str = file_to_string(file);
+
+    const uint64_t result = do_calculation(ctx-&gt;command, str);
+    print_result(result);
+
+    file_free_string(str);
+    file_free(file);
+}
+
+// --snip--
+</code></pre>
+<p>We also have to rewrite the <code>main()</code>-function to adhere to our new
+<code>file_mode</code> property. If we have <code>FileMode_Normal</code>, we just wrap the
+command in a <code>CommandContext</code>, and call <code>run_command_for_file</code> the same
+way we always did.</p>
+<p>If we have <code>FileMode_CsvList</code>, we read the contents of the CSV-file
+to a string, and pass it on to the Rust-defined <code>csv_for_each_value()</code>.</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    const Arguments args = parse_args(argc, argv);
+
+    if (args.command == Command_Version) {
+        print_version();
+        return 0;
+    }
+
+    switch (args.file_mode) {
+        case FileMode_Normal: {
+            CommandContext ctx = { .command = args.command };
+            run_command_for_file(args.filename, &amp;ctx);
+            break;
+        }
+        case FileMode_CsvList: {
+            char* csv = file_to_string(file_read(args.filename));
+            CommandContext ctx = { .command = args.command };
+            csv_for_each_value(csv, run_command_for_file, &amp;ctx);
+            file_free_string(csv);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+// --snip--
+
+</code></pre>
+<p>Let's test what we've got so far:</p>
+<pre><code class="language-console">$ cmake ..
+$ cmake --build .
+$ echo &quot;# Getting started&quot; &gt; chapter1.md
+$ echo &quot;# Wrapping up&quot; &gt; chapter2.md
+$ echo &quot;chapter1.md,chapter2.md&quot; &gt; list.csv
+$ ./count characters list.csv --csv-list
+18
+14
+</code></pre>
+<p>While we do get the count for each of the files, it's not very easy to see
+which count is for which file.</p>
+<p>As a finishing touch, we'll add the filename for each count, if we are
+in CSV-mode:</p>
+<pre><code class="language-c">// --snip--
+
+typedef struct CommandContext {
+    Command command;
+    bool print_filename;
+} CommandContext;
+
+// --snip--
+
+void print_result_with_filename(uint64_t result, const char* filename);
+
+// --snip--
+
+int main(const int argc, const char *argv[]) {
+
+    // --snip--
+
+    switch (args.file_mode) {
+        case FileMode_Normal: {
+            CommandContext ctx = { .command = args.command, .print_filename = false };
+            // --snip--
+        }
+        case FileMode_CsvList: {
+            char* csv = file_to_string(file_read(args.filename));
+            // --snip--
+        }
+    }
+
+    // --snip--
+}
+
+// --snip--
+
+void run_command_for_file(const char* filename, const void* ctx_ptr) {
+    // --snip--
+
+    const uint64_t result = do_calculation(ctx-&gt;command, str);
+    if (ctx-&gt;print_filename) {
+        print_result_with_filename(result, filename);
+    } else {
+        print_result(result);
+    }
+
+    // --snip--
+}
+
+// --snip--
+
+void print_result_with_filename(const uint64_t result, const char* filename) {
+    printf(&quot;%s: %lli\n&quot;, filename, result);
+}
+
+// --snip--
+</code></pre>
+<p>Our void pointer lets us add a new property to the <code>CommandContext</code> without
+touching any code on the Rust side.</p>
+<p>We also have to add a <code>print_result_with_filename()</code> function, and
+selecteviley execute it in <code>run_command_for_file()</code>.</p>
+<p>A final test is in order:</p>
+<pre><code class="language-console">$ cmake --build .
+$ ./count characters list.csv --csv-list
+18 chapter1.md
+14 chapter2.md
+</code></pre>
+<p>This output is much easier to digest.</p>
+<p>In this section we have showed how you can pass control from C to
+Rust and back again. In the next one, we will will see how we can
+pass heap allocated data from Rust to C.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="transferring-ownership-of-data"><a class="header" href="#transferring-ownership-of-data">Transferring ownership of data</a></h1>
+<p>In the previous section we added the ability to run calculations on a
+comma separated list of filenames, counting characters in e.g. a list
+of chapters in a book.</p>
+<p>But what if you want to add all those counts together, counting the
+number of characters in the entire book? We'll add a new <code>--csv-merged</code> flag
+that merges all the files, and run a count on the result:</p>
+<pre>
+./count version
+./count bytes list.csv [--csv-list | <i><b>--csv-merged</i></b>]
+./count characters list.csv [--csv-list | <i><b>--csv-merged</i></b>]
+</pre>
+<p>Supplied with the same files as the previous chapter, it should work like this:</p>
+<pre><code class="language-console">$ ./count characters list.csv --csv-merged
+32
+</code></pre>
+<p>To make things interesting we will implement this with a Rust function that
+takes ownership of the incoming CSV data, and that returns an owned string
+of the merged file content. We want something like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub extern &quot;C&quot; fn csv_merge_files(csv: *mut c_char) -&gt; *mut c_char;
+<span class="boring">}
+</span></code></pre></pre>
+<p>Transferring ownership means that <code>csv</code> should be free'd by <code>csv_merge_files</code>,
+and preferably not be used anymore by the caller. The caller also has to
+make sure the returned string is dropped. We'll get back to how we deal with
+this a little bit later.</p>
+<p>The new function will also have to read the files before it can merge them
+together. Our application already has a <code>file</code>-module written in C, and we're going to reuse that logic. Calling C
+functions from Rust in the topic of the next section, so we'll make a mock module to help us in the meantime:</p>
+<p>Filename: src/modules/file/mod.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct File(String);
+
+impl File {
+    pub fn to_str(&amp;self) -&gt; &amp;str {
+        if self.0 == &quot;chapter1.md&quot; {
+            &quot;# Getting started\n&quot;
+        } else if self.0 == &quot;chapter2.md&quot; {
+            &quot;# Wrapping up\n&quot;
+        } else {
+            panic!(&quot;No content defined for file: {}&quot;, self.0);
+        }
+    }
+}
+
+pub fn read_file(filename: &amp;str) -&gt; File {
+    File(filename.to_owned())
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Add the new module to our library:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod modules {
+    mod csv;
+    mod file;
+}
+
+// --snip--
+<span class="boring">}
+</span></code></pre></pre>
+<p>Before we forget, let's add the new file to the <code>RUST_LIB_SOURCES</code> list in CMakeLists.txt: <code>${CMAKE_SOURCE_DIR}/src/modules/file/mod.rs</code></p>
+<blockquote>
+<p><strong>NOTE</strong></p>
+<p>It would of course have been easier to rewrite the <code>file_read()</code>
+function completely in Rust, but with this project we want to show how you can reuse pre-existing
+code. When gradually porting a real world application, this is a useful skill.</p>
+</blockquote>
+<h2 id="merging-the-files"><a class="header" href="#merging-the-files">Merging the files</a></h2>
+<p>The file merging logic is rather simple. We read each file, and push
+the text content to a <code>merged</code> string:</p>
+<p>Filename: src/modules/csv.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use crate::modules::file;
+
+// --snip--
+
+fn merge_files(csv: &amp;str) -&gt; String {
+    let mut merged = String::new();
+    for value in csv.split(&quot;,&quot;) {
+        let file = file::read_file(value.trim());
+        merged.push_str(file.to_str());
+    }
+    merged
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We also need an FFI wrapper to be able to call it from C:</p>
+<p>Filename: src/modules/csv.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+mod ffi {
+    // --snip--
+
+    #[no_mangle]
+    pub extern &quot;C&quot; fn csv_merge_files(csv: *mut c_char) -&gt; *mut c_char {
+        let csv_str = unsafe { CStr::from_ptr(csv) }.to_str().unwrap();
+        let merged = super::merge_files(&amp;csv_str);
+        CString::new(merged).unwrap().into_raw()
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>CString::into_raw</code> is the only thing new here. It gives us a <code>*mut char</code> and
+consumes the original <code>CString</code>. The last part is important - to stop the <code>CString</code>
+destructor from immediately clearing the string upon returning. We transfer
+ownership of the data to C.</p>
+<h2 id="putting-the-pieces-together"><a class="header" href="#putting-the-pieces-together">Putting the pieces together</a></h2>
+<p>To be able to pass along the new flag, we need to update our command line parser:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+/// cbindgen:prefix-with-name
+#[repr(C)]
+pub enum FileMode {
+    Normal,
+    CsvList,
+    CsvMerged
+}
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let file_mode = if let Some(csv_flag) = arguments.get(3).copied() {
+        let csv_flag = unsafe { CStr::from_ptr(csv_flag) }.to_str().unwrap();
+        match csv_flag {
+            &quot;--csv-list&quot; =&gt; FileMode::CsvList,
+            &quot;--csv-merged&quot; =&gt; FileMode::CsvMerged,
+            _ =&gt; panic!(&quot;CSV flag not recognized: {csv_flag}&quot;)
+        }
+    } else {
+        FileMode::Normal
+    };
+
+    // --snip--
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And we also need to update our <code>main()</code>-function to use the new function:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    // --snip--
+
+    switch (args.file_mode) {
+        // --snip--
+        case FileMode_CsvMerged: {
+            char* csv = file_to_string(file_read(args.filename));
+            char* content = csv_merge_files(csv);
+            const size_t result = do_calculation(args.command, content);
+            print_result(result);
+            break;
+        }
+    }
+
+    // --snip--
+}
+</code></pre>
+<p>We read the CSV file, and pass it onto <code>csv_merge_files()</code>. Since all the
+file reading is already done once we have the merged content, we skip
+right ahead to <code>do_calculation()</code> and <code>print_result()</code>.</p>
+<p>We can go ahead and test the new functionality:</p>
+<pre><code class="language-console">$ cmake ..
+$ cmake --build .
+$ echo &quot;chapter1.md,chapter2.md&quot; &gt; list.csv
+$ ./count characters list.csv --csv-merged
+32
+</code></pre>
+<p>This is indeed the output we expected. The files chapter1.md and chapter2.md
+have 32 charactes in total.</p>
+<p>But while we passed ownership of data in both directions, we never did any
+cleanup. For a small program like this it wouldn't really matter, as the
+operating system will reclaim the memory when the process finishes. It is
+however a good practice to free all the memory you use, and in a long running
+or data intensive application it is strictly necessary, lest you'll run
+out of memory eventually.</p>
+<h2 id="freeing-up-memory-from-the-other-side"><a class="header" href="#freeing-up-memory-from-the-other-side">Freeing up memory from the other side</a></h2>
+<p>We cannot reliably free C allocated memory from Rust, and vice versa. It
+has to be free'd / dropped where it was created. In practice this means
+that if you transfer ownership of heap allocated data across the language border,
+you also have to provide a way to deallocate that data.</p>
+<p>Let's start with the <code>csv</code> argument that we pass to <code>csv_merge_files()</code>.
+Alongside our data, we require a callback function, <code>free_csv</code>, that
+will free it. We use this callback to free <code>csv</code> as soon as we're done with it:</p>
+<p>Filename: src/modules/csv.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod ffi {
+    // --snip--
+
+    #[no_mangle]
+    pub extern &quot;C&quot; fn csv_merge_files(
+        csv: *mut c_char,
+        free_csv: unsafe extern &quot;C&quot; fn(*mut c_char),
+    ) -&gt; *mut c_char {
+        let csv_str = unsafe { CStr::from_ptr(csv) }.to_str().unwrap();
+        unsafe { free_csv(csv); }
+        let merged = super::merge_files(&amp;csv_str);
+        CString::new(merged).unwrap().into_raw()
+    }
+}
+
+// --snip--
+<span class="boring">}
+</span></code></pre></pre>
+<p>We need to update <code>main.c</code> to pass along the callback:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    // --snip--
+
+    switch (args.file_mode) {
+        // --snip--
+        case FileMode_CsvMerged: {
+            // --snip--
+            char* content = csv_merge_files(csv, file_free_string);
+            // --snip--
+        }
+    }
+}
+
+// --snip--
+</code></pre>
+<p>After these changes, <code>csv_merge_files()</code> is truly the responsible owner
+of <code>csv</code>. But it also returns data, that we should deal with. We start
+by adding a function for C to free the data:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod ffi {
+    //--snip--
+
+    #[no_mangle]
+    pub extern &quot;C&quot; fn csv_free_merged_file(merged: *mut c_char) {
+        unsafe { CString::from_raw(merged) };
+    }
+}
+
+//--snip--
+<span class="boring">}
+</span></code></pre></pre>
+<p>At first glance it might look like this code is doing nothing. But just
+like <code>CString::into_raw()</code> transfers ownership away from an object,
+<code>CString::from_raw()</code> will reclaim it. Since the <code>CString</code> immediately
+goes out of scope, it's destructor will be called, and the data will
+be deallocated. Let's clean up after ourselves in <code>main.c</code>:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    // --snip--
+
+    switch (args.file_mode) {
+        // --snip--
+
+        case FileMode_CsvMerged: {
+            char* csv = file_to_string(file_read(args.filename));
+            char* content = csv_merge_files(csv, file_free_string);
+            const size_t result = do_calculation(args.command, content);
+            csv_free_merged_file(content);
+            print_result(result);
+            break;
+        }
+    }
+
+    // --snip--
+}
+</code></pre>
+<p>A call to <code>csv_free_merged_file()</code> has been added, and all memory should
+now explicitly have been taken care of.</p>
+<h2 id="references-vs-owned-data"><a class="header" href="#references-vs-owned-data">References vs owned data</a></h2>
+<p>When you transfer data to or from C, you generally have to read the
+documentation to know who's the owner of the data after the function
+call has happened.</p>
+<p>We've created a mini-reference below for how you can pass common types of heap
+data through FFI.</p>
+<h3 id="passing-heap-data-from-c-to-rust"><a class="header" href="#passing-heap-data-from-c-to-rust">Passing heap data from C to Rust</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">From -&gt; to</th><th style="text-align: left">Conversion</th></tr></thead><tbody>
+<tr><td style="text-align: left">*const c_char -&gt; &amp;str (reference)</td><td style="text-align: left">unsafe { CStr::from_ptr(char_ptr) }.to_str().unwrap()</td></tr>
+<tr><td style="text-align: left">*mut c_char -&gt; &amp;str (owned)</td><td style="text-align: left">unsafe { CStr::from_ptr(char_ptr) }.to_str().unwrap()</td></tr>
+<tr><td style="text-align: left">*const u8 + len -&gt; &amp;[u8] (reference)</td><td style="text-align: left">unsafe { slice::from_raw_parts(ptr, len) }</td></tr>
+<tr><td style="text-align: left">*const u8 + len -&gt; &amp;[u8] (owned)</td><td style="text-align: left">unsafe { slice::from_raw_parts(ptr, len) }</td></tr>
+</tbody></table>
+</div>
+<p>Remember that if you transfer ownership, you should also supply a callback or a
+function to free the memory.</p>
+<h3 id="passing-heap-data-from-rust-to-c"><a class="header" href="#passing-heap-data-from-rust-to-c">Passing heap data from Rust to C</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">From -&gt; to</th><th style="text-align: left">Conversion</th></tr></thead><tbody>
+<tr><td style="text-align: left">&amp;str -&gt; *const c_char (reference)</td><td style="text-align: left"><code>CString::new(rust_str).unwrap().as_ptr()</code></td></tr>
+<tr><td style="text-align: left">String -&gt; *mut c_char (owned)</td><td style="text-align: left"><code>CString::new(rust_str).unwrap().into_raw()</code><br/><br/><em>Deallocation:</em><br/><code>unsafe { CString::from_raw(char_ptr) };</code></td></tr>
+<tr><td style="text-align: left">&amp;[u8] -&gt; *const u8 (reference)</td><td style="text-align: left"><code>u8_slice.as_ptr()</code></td></tr>
+<tr><td style="text-align: left">Vec<u8> -&gt; *mut u8 (owned)</td><td style="text-align: left"><code>vec.shrink_to_fit();</code><br/><code>let mut vec = mem::ManuallyDrop::new(vec);</code><br/><code>let ptr = vec.as_mut_ptr()</code><br/><code>let len = v.len();</code><br/><br/><em>Deallocation:</em><br/><code>unsafe {</code><br/>    <code>Vec::from_raw_parts(ptr, len, len)</code><br/><code>}</code></td></tr>
+<tr><td style="text-align: left">RustType -&gt; *const RustType (reference)</td><td style="text-align: left"><code>&amp;rust_obj as *const RustType</code></td></tr>
+<tr><td style="text-align: left">RustType -&gt; *mut RustType (owned)</td><td style="text-align: left"><code>Box::into_raw(Box::new(rust_obj));</code><br/><br/><em>Deallocation:</em><br/><code>unsafe { Box::from_raw(ptr) };</code></td></tr>
+</tbody></table>
+</div>
+<p>In the next section we will give you even more control, by enabling you to call
+any C function directly from Rust, not just callbacks.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>

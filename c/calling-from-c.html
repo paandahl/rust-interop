@@ -1,0 +1,340 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Calling a Rust function from C - The Rust Interop Book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">The Rust Interop Book</a></li><li class="chapter-item expanded "><a href="../c-intro.html"><strong aria-hidden="true">1.</strong> Interop with C</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../c/initial.html"><strong aria-hidden="true">1.1.</strong> Introducing our C application</a></li><li class="chapter-item expanded "><a href="../c/calling-from-c.html" class="active"><strong aria-hidden="true">1.2.</strong> Calling a Rust function from C</a></li><li class="chapter-item expanded "><a href="../c/parameter-and-return.html"><strong aria-hidden="true">1.3.</strong> Taking references and returning primitives from Rust</a></li><li class="chapter-item expanded "><a href="../c/cbindgen.html"><strong aria-hidden="true">1.4.</strong> Using cbindgen to generate C headers</a></li><li class="chapter-item expanded "><a href="../c/shared-types.html"><strong aria-hidden="true">1.5.</strong> Shared structs and enums</a></li><li class="chapter-item expanded "><a href="../c/callbacks.html"><strong aria-hidden="true">1.6.</strong> Sending callbacks from C</a></li><li class="chapter-item expanded "><a href="../c/transferring-ownership.html"><strong aria-hidden="true">1.7.</strong> Transferring ownership of data</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Rust Interop Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/paandahl/rust-interop" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="calling-a-rust-function-from-c"><a class="header" href="#calling-a-rust-function-from-c">Calling a Rust function from C</a></h1>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> </p>
+<p>If you're going to type the code as you follow along,
+you should start by making a copy of the initial C application in 
+the first chapter.</p>
+<pre><code class="language-shell">$ cp -R rust-interop/c/chap1 count
+$ cd count
+</code></pre>
+<p>The final result of this chapter is also available 
+<a href="https://github.com/paandahl/rust-interop/tree/main/c/chap2">here</a>.</p>
+</blockquote>
+<p>Let's dive straight in and use cargo to initialize a Rust library
+directly in our project folder:</p>
+<pre><code class="language-shell">$ cp -R rust-interop/c/chap1 count
+$ cd count
+$ cargo init --lib --name count
+</code></pre>
+<blockquote>
+<p>Here, we put our C and Rust code in the same folder. The upside 
+to this approach is that we can gradually introduce Rust to our modules, 
+and we're going to demonstrate a mixed-language unit of code with dependencies 
+in both directions.</p>
+<p>Another common practice is keeping the Rust library in a separate folder;
+if it is self-contained, that is an excellent way to handle it.</p>
+</blockquote>
+<p>We also have to tell cargo that we intend to produce a static system library
+(to be linked into our C binary):</p>
+<p>Filename: Cargo.toml</p>
+<pre><code class="language-toml"># --snip--
+
+[lib]
+crate-type = [&quot;staticlib&quot;]
+
+[dependencies]
+</code></pre>
+<h2 id="making-the-function"><a class="header" href="#making-the-function">Making the function</a></h2>
+<p>Let's add a <code>version</code> command that works like this:</p>
+<pre><code class="language-shell">$ ./count version
+1.0.0
+</code></pre>
+<p>We start by replacing the contents of lib.rs with our new function:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub extern &quot;C&quot; fn print_version() {
+    println!(&quot;count version 1.0.0&quot;);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>There are a couple of noteworthy things to point out here:</p>
+<h3 id="name-mangling"><a class="header" href="#name-mangling">Name mangling</a></h3>
+<p>Usually, the Rust compiler rewrites the function names behind the scenes to include 
+details such as the crate name and the containing module.</p>
+<p>Our function name will turn into something like this:</p>
+<pre><code>__ZN5count11get_version17h0b87bf00f9702f77E
+</code></pre>
+<p>C has no concept of crates and modules, so we need to add <code>#[no_mangle]</code> to be able
+to resolve the function simply as <code>print_version()</code>.</p>
+<p>With mangling disabled, all exported function names need to be unique.</p>
+<h3 id="abi-application-binary-interface"><a class="header" href="#abi-application-binary-interface">ABI (Application Binary Interface)</a></h3>
+<p>We also add <code>extern &quot;C&quot;</code> to the function to allow it to be called with your platforms
+C ABI. This specifies how data is laid out in memory and how functions are called.</p>
+<p>The C ABI is the lingua franca of application binaries and our only line of 
+communication to the non-Rust world. All interop between Rust 
+and other languages is based on calling conventions from C.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> We have also added the <code>pub</code> keyword to our function. Although strictly
+not necessary (C has no concept of private functions), it's good to be explicit 
+that our function is part of the library's public interface.</p>
+</blockquote>
+<h3 id="building-the-rust-library"><a class="header" href="#building-the-rust-library">Building the Rust library</a></h3>
+<p>We can test that our Rust library builds with cargo:</p>
+<pre><code class="language-shell">$ cargo build
+Compiling count v0.1.0 (/path/to/count)
+ Finished dev [unoptimized + debuginfo] target(s) in 0.56s
+</code></pre>
+<p>The static library should now be ready at <code>target/debug/libcount.a</code> (Unix-like) or
+<code>target/debug/count.lib</code> (Windows). </p>
+<h2 id="calling-our-function-from-c"><a class="header" href="#calling-our-function-from-c">Calling our function from C</a></h2>
+<p>By manually writing a function declaration, we tell our C application that the function <code>get_version()</code> exists. Then we call that function if <code>command</code> is equal
+to <code>&quot;version&quot;</code>. We make sure to do this before the file name is parsed since
+no file is involved.</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+void print_version();
+
+int main(const int argc, const char *argv[]) {
+    const char* command = argv[1];
+
+    if (strcmp(command, &quot;version&quot;) == 0) {
+        print_version();
+        return 0;
+    }
+
+    // --snip--
+</code></pre>
+<p>We amust also amend our CMake configuration to link to the Rust library. Add the
+following lines to the bottom of the file:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake"># --snip--
+
+set(RUST_LIB_NAME ${CMAKE_STATIC_LIBRARY_PREFIX}count${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(RUST_LIB_PATH ${CMAKE_SOURCE_DIR}/target/debug/${RUST_LIB_NAME})
+target_link_libraries(count ${RUST_LIB_PATH})
+</code></pre>
+<p>We construct the library name in a platform-independent way (libcount.a or
+count.lib), and link it to our executable.</p>
+<p>Let's build and run the program:</p>
+<pre><code class="language-shell">$ mkdir -p build
+$ cd build
+$ cmake ..
+$ cmake --build .
+$ ./count version
+count version 1.0.0
+</code></pre>
+<p>We've extended our C application with Rust code!</p>
+<h2 id="harmonizing-cmake--cargo"><a class="header" href="#harmonizing-cmake--cargo">Harmonizing CMake &amp; Cargo</a></h2>
+<p>The current setup works, but if we make changes on the Rust
+side, we have to manually trigger the cargo build before
+the CMake build.</p>
+<p>Let's rewrite our CMake configuration so that it automatically
+rebuilds the Rust code upon changes:</p>
+<p>Filename: CMakeLists.txt</p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.22)
+project(rust-interop-c)
+set(CMAKE_C_STANDARD 17)
+
+set(RUST_LIB_NAME ${CMAKE_STATIC_LIBRARY_PREFIX}count${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(RUST_LIB_PATH ${CMAKE_SOURCE_DIR}/target/debug/${RUST_LIB_NAME})
+
+add_custom_command(
+        OUTPUT ${RUST_LIB_PATH}
+        COMMAND cargo build --manifest-path ${CMAKE_SOURCE_DIR}/Cargo.toml
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/lib.rs
+        USES_TERMINAL
+)
+
+add_executable(count src/main.c src/modules/file/file.c ${RUST_LIB_PATH})
+target_link_libraries(count ${RUST_LIB_PATH})
+</code></pre>
+<p>We use <code>add_custom_command()</code> to define our library as an 
+<code>OUTPUT</code> of the cargo build, that <code>DEPENDS</code> on changes
+to the content of <code>lib.rs</code>. </p>
+<p>Adding the library to the 
+source list in <code>add_executable()</code> will evaluate our custom
+command before linking happens.</p>
+<p>From the <code>build</code>-folder, we can now re-configure CMake:</p>
+<pre><code class="language-shell">$ cmake ..
+</code></pre>
+<p>And subsequent builds should recompile the Rust library 
+if there are new changes:</p>
+<pre><code class="language-shell">$ cmake --build .
+</code></pre>
+<h3 id="whats-next"><a class="header" href="#whats-next">What's next?</a></h3>
+<p>The facilities we use to bind Rust to other languages are often
+referred to as the Rust FFI (Foreign Function Interface). Now
+that we have  a working configuration, we will see how we can
+send and receive data across the FFI boundary.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../c/initial.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../c/parameter-and-return.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../c/initial.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../c/parameter-and-return.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

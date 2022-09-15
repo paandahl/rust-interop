@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Shared structs and enums - The Rust Interop Book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">The Rust Interop Book</a></li><li class="chapter-item expanded "><a href="../c-intro.html"><strong aria-hidden="true">1.</strong> Interop with C</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../c/initial.html"><strong aria-hidden="true">1.1.</strong> Introducing our C application</a></li><li class="chapter-item expanded "><a href="../c/calling-from-c.html"><strong aria-hidden="true">1.2.</strong> Calling a Rust function from C</a></li><li class="chapter-item expanded "><a href="../c/parameter-and-return.html"><strong aria-hidden="true">1.3.</strong> Taking references and returning primitives from Rust</a></li><li class="chapter-item expanded "><a href="../c/cbindgen.html"><strong aria-hidden="true">1.4.</strong> Using cbindgen to generate C headers</a></li><li class="chapter-item expanded "><a href="../c/shared-types.html" class="active"><strong aria-hidden="true">1.5.</strong> Shared structs and enums</a></li><li class="chapter-item expanded "><a href="../c/callbacks.html"><strong aria-hidden="true">1.6.</strong> Sending callbacks from C</a></li><li class="chapter-item expanded "><a href="../c/transferring-ownership.html"><strong aria-hidden="true">1.7.</strong> Transferring ownership of data</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Rust Interop Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/paandahl/rust-interop" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="shared-structs-and-enums"><a class="header" href="#shared-structs-and-enums">Shared structs and enums</a></h1>
+<p>The current program works if you pass the correct command
+line arguments, but if a user tries to
+call it without any arguments it will fail with a segfault:</p>
+<pre><code class="language-console">$ ./count
+zsh: segmentation fault  ./count
+</code></pre>
+<p>To improve upon this, we'll add error handling by validating the command line arguments passed in by the user.</p>
+<p>Let's start by adding a struct to represent the command line
+arguments, and an enum to hold the chosen command.</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+pub struct Arguments {
+    command: Command,
+    filename: *const c_char,
+}
+
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We use <code>*const c_char</code> instead of the built-in <code>String</code> type because
+we intend to read the filename property from our C code.</p>
+<p>Let's define the interface of the function that will parse the arguments:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    let arguments = unsafe { slice::from_raw_parts(argv, argc) };
+
+    // --snip--
+
+    Arguments { command, filename }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We define <code>argc</code> and <code>argv</code> to mimic the parameters our entry point takes in <code>main.c</code>.
+There's a subtle difference in that <code>usize</code> translates to <code>uintptr_t</code>, not <code>size_t</code> as one
+might have thought. Although not guaranteed by the C standard, <code>size_t</code> is smaller or
+equal to <code>unitptr_t</code> in all known implementations, so we should be fine.</p>
+<p>The two parameters are then upgraded to a slice (<code>&amp;[*const c_char]</code>) for easier access. This is
+unsafe because we have to promise the compiler that <code>argv</code> contains exactly <code>argc</code> elements. Once the slice
+is created, its elements can be accessed safely.</p>
+<p>Let's see how we can convert the second element to a <code>Command</code>:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let command = arguments.get(1).copied().expect(&quot;Missing command.&quot;);
+    let command = unsafe { CStr::from_ptr(command) }.to_str().unwrap();
+    let command = match command {
+        &quot;version&quot; =&gt; Command::Version,
+        &quot;bytes&quot; =&gt; Command::Bytes,
+        &quot;characters&quot; =&gt; Command::Characters,
+        _ =&gt; panic!(&quot;Command not recognized: {command}&quot;)
+    };
+
+    // --snip--
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We use three separate steps to gradually turn <code>command</code> into the type we want it to be:</p>
+<ol>
+<li>We <code>.get()</code> the second element of the <code>arguments</code> slice, make a copy of the referenced
+pointer, and trigger a <code>panic!</code> if it's missing. If everything worked as expected,
+we now have a <code>*const c_char</code>.</li>
+<li>The pointer is then fed in to <code>Cstr::from_ptr</code>, which is unsafe because we have to promise
+that our string is zero-terminated (ends with a <code>\0</code> character). We then convert it
+to an <code>&amp;str</code>.</li>
+<li>Lastly, we use a match expression to map it to the correct <code>Command</code>.</li>
+</ol>
+<p>The filename also needs to be handled:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip--
+
+#[no_mangle]
+pub extern &quot;C&quot; fn parse_args(argc: usize, argv: *const *const c_char) -&gt; Arguments {
+    // --snip--
+
+    let filename = arguments.get(2).copied();
+    if filename.is_none() &amp;&amp; command != Command::Version {
+        panic!(&quot;Missing filename.&quot;);
+    }
+    let filename = filename.unwrap_or(ptr::null());
+
+    // --snip--
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We only require the filename to be present if the command is something else than &quot;version&quot;.
+In the other case, we create a null pointer by calling <code>ptr::null()</code>.</p>
+<h2 id="inspecting-the-generated-bindings"><a class="header" href="#inspecting-the-generated-bindings">Inspecting the generated bindings</a></h2>
+<p>Let's have a look at the generated C bindings by running a <code>cargo build</code>:</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef struct Arguments Arguments;
+
+void print_version(void);
+
+uint64_t count_characters(const char *text);
+
+struct Arguments parse_args(uintptr_t argc, const char *const *argv);
+</code></pre>
+<p>We have a problem! The <code>Arguments</code> is defined as an opaque struct. So while we
+can get a handle on it, we won't be able to access any of its fields in C.</p>
+<p>The reason that cbindgen went for the opaque type is that Rust's default data layout is
+incompatible with C. Luckily, Rust has an attribute called <code>repr</code>, that will fix that
+problem for us:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip --
+
+#[repr(C)]
+pub struct Arguments {
+    command: Command,
+    filename: *const c_char,
+}
+
+#[repr(C)]
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+
+// --snip --
+<span class="boring">}
+</span></code></pre></pre>
+<p>With this fix in hand, we can do another <code>cargo build</code> and look at cbindgen's output.</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef enum Command {
+  Version,
+  Bytes,
+  Characters,
+} Command;
+
+typedef struct Arguments {
+  enum Command command;
+  const char *filename;
+} Arguments;
+
+// --snip--
+</code></pre>
+<p>This looks much better! But let's ask cbindgen to prefix our enum values to reduce the
+risk of a name colission:</p>
+<p>Filename: src/lib.rs</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// --snip --
+
+/// cbindgen:prefix-with-name
+#[repr(C)]
+#[derive(PartialEq)]
+pub enum Command {
+    Version,
+    Bytes,
+    Characters,
+}
+
+// --snip --
+<span class="boring">}
+</span></code></pre></pre>
+<p>A rebuild should change the Command enum to this:</p>
+<p>Filename: target/bridge/bindings.h</p>
+<pre><code class="language-c">// --snip--
+
+typedef enum Command {
+  Command_Version,
+  Command_Bytes,
+  Command_Characters,
+} Command;
+
+// --snip--
+</code></pre>
+<p>That looks much better! Let's take it for a spin.</p>
+<h2 id="using-our-argument-parser"><a class="header" href="#using-our-argument-parser">Using our argument parser</a></h2>
+<p>Using our new argument parsing function is fairly straightforward:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+int main(const int argc, const char *argv[]) {
+    const Arguments args = parse_args(argc, argv);
+
+    if (args.command == Command_Version) {
+        print_version();
+        return 0;
+    }
+
+    run_command_for_file(args.command, args.filename);
+    return 0;
+}
+
+// --snip--
+</code></pre>
+<p>This won't work quite yet -
+we also have to update the command type in <code>run_command_for_file</code> and <code>do_calculation</code>:</p>
+<p>Filename: src/main.c</p>
+<pre><code class="language-c">// --snip--
+
+void run_command_for_file(Command command, const char* filename);
+uint64_t do_calculation(Command command, const char* data);
+
+// --snip--
+
+void run_command_for_file(const Command command, const char* filename) {
+    // --snip--
+}
+
+uint64_t do_calculation(const Command command, const char* data) {
+    switch (command) {
+        case Command_Bytes:
+            return count_bytes(data);
+        case Command_Characters:
+            return count_characters(data);
+        default:
+            fprintf(stderr, &quot;Unrecognized command: %i\n&quot;, command);
+            exit(1);
+    }
+}
+
+// --snip--
+</code></pre>
+<p>Now that <code>command</code> is an enum, we can get rid of all the calls to <code>strcmp</code>,
+and we can also opt to use a <code>switch</code> statement.</p>
+<p>Build and run the application to see the input validation in action:</p>
+<pre><code class="language-console">$ cmake --build .
+$ ./count
+thread '&lt;unnamed&gt;' panicked at 'Missing command.', src/lib.rs:36:45
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+fatal runtime error: failed to initiate panic, error 5
+zsh: abort      ./count
+</code></pre>
+<p>Panicking is a very crude form of error handling, but at least we give the user
+a hint that there's a <code>'Missing command.'</code>.</p>
+<p>Sharing structs across the FFI boundary is a useful technique when your function
+is dealing with more than simple values. In the next section we will show how you
+can send function callbacks from C to Rust.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../c/cbindgen.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../c/callbacks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../c/cbindgen.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../c/callbacks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
